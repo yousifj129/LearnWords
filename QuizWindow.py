@@ -9,9 +9,10 @@ class QuizWindow(QMainWindow):
     def __init__(self, learned_words: Dict):
         super().__init__()
         self.setWindowTitle("Vocabulary Quiz")
-        self.setMinimumSize(500, 500)  # Made taller for additional info
-        
+        self.setMinimumSize(900, 600)  # Made taller for additional info
+        self.setMaximumSize(1260,720)
         self.learned_words = learned_words
+        self.wordsToLearn = self.learned_words.copy()
         self.current_word = None
         self.correct_answer = None
         
@@ -85,7 +86,7 @@ class QuizWindow(QMainWindow):
     
     def get_random_words(self, exclude_word: str) -> List[str]:
         """Get random words from learned words, excluding the current word."""
-        available_words = [word for word in self.learned_words.keys() if word != exclude_word]
+        available_words = [word for word in self.wordsToLearn.keys() if word != exclude_word]
         return random.sample(available_words, min(3, len(available_words)))
     
     def next_question(self):
@@ -94,13 +95,13 @@ class QuizWindow(QMainWindow):
         self.result_label.clear()
         self.word_info.hide()
         
-        if len(self.learned_words) < 4:
+        if len(self.wordsToLearn) < 4:
             self.result_label.setText("Please learn at least 4 words before taking the quiz!")
             self.close()
             return
         
         # Select a random word
-        self.current_word = random.choice(list(self.learned_words.keys()))
+        self.current_word = random.choice(list(self.wordsToLearn.keys()))
         self.word_label.setText(self.current_word)
         
         # Get the correct definition
@@ -117,11 +118,13 @@ class QuizWindow(QMainWindow):
         # Store the correct answer index
         self.correct_answer = all_options.index(correct_definition)
         
+        self.options_group.setExclusive(False)
         # Set the radio button texts
         for i, option in enumerate(all_options):
             self.option_buttons[i].setText(option)
+            self.options_group.buttons()[i].setChecked(False)
             self.option_buttons[i].setChecked(False)
-        
+        self.options_group.setExclusive(True)
         # Enable submit button
         self.submit_button.setEnabled(True)
     
@@ -153,6 +156,7 @@ class QuizWindow(QMainWindow):
             self.correct_count += 1
             self.result_label.setText("✓ Correct!")
             self.result_label.setStyleSheet("color: green; font-size: 16px; margin: 10px;")
+            self.wordsToLearn.pop(self.current_word)
         else:
             self.result_label.setText("✗ Incorrect!")
             self.result_label.setStyleSheet("color: red; font-size: 16px; margin: 10px;")
