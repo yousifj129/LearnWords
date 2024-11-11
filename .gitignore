@@ -160,3 +160,9 @@ cython_debug/
 #.idea/
 learned_words.json
 learned_words
+/dist
+/build
+*.h5
+*.csv
+*.spec
+__pycache__

@@ -3,9 +3,9 @@ import json
 import random
 from pathlib import Path
 from typing import List, Dict
-from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
+from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, 
                               QHBoxLayout, QLineEdit, QPushButton, QTextEdit, 
-                              QLabel, QMessageBox, QRadioButton, QButtonGroup)
+                              QLabel, QMessageBox)
 from PySide6.QtCore import Qt
 import pyttsx3 
 from Word import Word

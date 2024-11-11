@@ -2,7 +2,7 @@ import random
 from typing import List, Dict
 from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, 
                               QHBoxLayout , QPushButton, 
-                              QLabel, QRadioButton, QButtonGroup, QListWidget, QListWidgetItem)
+                              QListWidget, QListWidgetItem)
 from PySide6.QtCore import Qt
 class InspectWordsWindow(QMainWindow):
     def __init__(self, learned_words: Dict, mainWind):
