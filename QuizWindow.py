@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout,
 from PySide6.QtCore import Qt
 
 class QuizWindow(QMainWindow):
-    def __init__(self, learned_words: Dict):
+    def __init__(self, learned_words):
         super().__init__()
         self.setWindowTitle("Vocabulary Quiz")
         self.setMinimumSize(900, 600)  # Made taller for additional info
@@ -105,11 +105,11 @@ class QuizWindow(QMainWindow):
         self.word_label.setText(self.current_word)
         
         # Get the correct definition
-        correct_definition = self.learned_words[self.current_word]["definition"]
+        correct_definition = self.learned_words[self.current_word]["definition"][0]
         
         # Get wrong definitions from other random words
         other_words = self.get_random_words(self.current_word)
-        wrong_definitions = [self.learned_words[word]["definition"] for word in other_words]
+        wrong_definitions = [self.learned_words[word]["definition"][0] for word in other_words]
         
         # Create all options and shuffle them
         all_options = [correct_definition] + wrong_definitions
@@ -139,9 +139,11 @@ class QuizWindow(QMainWindow):
         
         self.total_questions += 1
         word_data = self.learned_words[self.current_word]
-        
+        definstr = ""
+        for defin in word_data['definition']:
+            definstr +=  '- '+defin+'\n'
         # Prepare word information display
-        info_text = f"Definition: {word_data['definition']}\n\n"
+        info_text = f"Definition:\n {definstr}\n\n"
         
         if word_data['synonyms']:
             info_text += f"Synonyms: {', '.join(word_data['synonyms'])}\n"
