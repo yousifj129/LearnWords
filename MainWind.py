@@ -110,16 +110,20 @@ class VocabularyApp(QMainWindow):
             # Fetch word information
             word = Word(word_text)
             definitionslist = []
+            examplesList = []
             for meaning in word.meanings:
                 for definition in meaning.definitions:
                     definitionslist.append(definition.definition)
+                    if definition.example != None:
+                        examplesList.append(definition.example)
             print(definitionslist)
             # Store word information
             self.learned_words[word_text] = {
                 "definition": definitionslist,
                 "synonyms": word.all_synonyms,
                 "antonyms": word.all_antonyms,
-                "phonetic": word.phonetic
+                "phonetic": word.phonetic,
+                "examples": examplesList
             }
             
             # Save to file
@@ -142,14 +146,17 @@ class VocabularyApp(QMainWindow):
     def display_word_info(self, word: str):
         """Display word information in the text area."""
         word_info = self.learned_words[word]
-        definitionslist :str = ""
+        definitionstr :str = ""
+        examplestr : str = ""
         for defin in word_info['definition']:
-            definitionslist +=  '- '+defin+'\n'
+            definitionstr +=  '- '+defin+'\n'
+        for ex in word_info['examples']:
+            examplestr +=  '- '+ex+'\n'
         # Format the information
         display_text = f"Word: {word}\n"
         display_text += f"Phonetic: {word_info['phonetic']}\n\n"
-        display_text += f"Definitions: \n{definitionslist}\n\n"
-        
+        display_text += f"Definitions: \n{definitionstr}\n\n"
+        display_text += f"Examples: \n{examplestr}\n\n"
         if word_info['synonyms']:
             display_text += f"Synonyms: {', '.join(word_info['synonyms'])}\n"
         
