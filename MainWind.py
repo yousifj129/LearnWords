@@ -85,7 +85,7 @@ class VocabularyApp(QMainWindow):
     
     def save_words(self):
         """Save learned words to JSON file."""
-        self.words_file.write_text(json.dumps(self.learned_words, indent=2))
+        self.words_file.write_text(json.dumps(self.learned_words))
     def read_word(self):
         word = self.currentWord
         self.speechEngine.say(word)
@@ -109,10 +109,14 @@ class VocabularyApp(QMainWindow):
             
             # Fetch word information
             word = Word(word_text)
-            
+            definitionslist = []
+            for meaning in word.meanings:
+                for definition in meaning.definitions:
+                    definitionslist.append(definition.definition)
+            print(definitionslist)
             # Store word information
             self.learned_words[word_text] = {
-                "definition": word.main_definition,
+                "definition": definitionslist,
                 "synonyms": word.all_synonyms,
                 "antonyms": word.all_antonyms,
                 "phonetic": word.phonetic
@@ -138,11 +142,13 @@ class VocabularyApp(QMainWindow):
     def display_word_info(self, word: str):
         """Display word information in the text area."""
         word_info = self.learned_words[word]
-        
+        definitionslist :str = ""
+        for defin in word_info['definition']:
+            definitionslist +=  '- '+defin+'\n'
         # Format the information
         display_text = f"Word: {word}\n"
         display_text += f"Phonetic: {word_info['phonetic']}\n\n"
-        display_text += f"Definition: {word_info['definition']}\n\n"
+        display_text += f"Definitions: \n{definitionslist}\n\n"
         
         if word_info['synonyms']:
             display_text += f"Synonyms: {', '.join(word_info['synonyms'])}\n"

@@ -37,8 +37,6 @@ class InspectWordsWindow(QMainWindow):
     def populate_word_list(self):
         self.word_list.clear()
         for word, info in self.learned_words.items():
-            print(word)
-            print(info)
             item = QListWidgetItem(f"{word} - {info["definition"]}")
             item.setData(Qt.UserRole, word)
             self.word_list.addItem(item)

@@ -88,7 +88,6 @@ class Word:
                     antonyms=def_data.get("antonyms", [])
                 )
                 definitions.append(definition)
-            
             meaning = Meaning(
                 part_of_speech=meaning_data["partOfSpeech"],
                 definitions=definitions,
