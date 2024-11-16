@@ -9,6 +9,8 @@ LearnWords is a vocabulary-building app that helps you learn new words while rea
 3. Review the word's information and add it to your vocabulary list.
 4. Take a quiz to test your knowledge of the words you've learned.
 5. to inspect and delete words you don't need anymore, click on the `Inspect words` button, and then double click the word you want to delete. Also, you can clear all with one button.
+![alt text]([http://url/to/img.png](https://github.com/yousifj129/LearnWords/blob/aed01cda79d163ff4343ded2f8c2bd4552258306/imgs/mainWindow.png
+))
 
 ## Under the Hood
 
