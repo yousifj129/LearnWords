@@ -10,7 +10,7 @@ LearnWords is a vocabulary-building app that helps you learn new words while rea
 4. Take a quiz to test your knowledge of the words you've learned.
 5. to inspect and delete words you don't need anymore, click on the `Inspect words` button, and then double click the word you want to delete. Also, you can clear all with one button.
 ![alt text](https://github.com/yousifj129/LearnWords/blob/aed01cda79d163ff4343ded2f8c2bd4552258306/imgs/mainWindow.png)
-
+![alt text](https://github.com/yousifj129/LearnWords/blob/77f15d767c18a4c029ca83619fd69620f40b11eb/imgs/QuizWindow.png)
 ## Under the Hood
 
 LearnWords uses the DictionaryAPI to fetch word data. When you add a word to your vocabulary list, the app saves the word's information to a JSON file named `learned_words.json`. This file stores all the words you've learned, along with their definitions, synonyms, antonyms, and examples.
