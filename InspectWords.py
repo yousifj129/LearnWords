@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout,
                               QHBoxLayout , QPushButton, 
                               QListWidget, QListWidgetItem)
 from PySide6.QtCore import Qt
+import os
 class InspectWordsWindow(QMainWindow):
     def __init__(self, learned_words: Dict, mainWind):
         super().__init__()
