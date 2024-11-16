@@ -12,11 +12,11 @@ from Word import Word
 from QuizWindow import QuizWindow
 from InspectWords import InspectWordsWindow
 
-class VocabularyApp(QMainWindow):
+class MainWind(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Learn wordssss")
-        self.setMinimumSize(600, 400)
+        self.setWindowTitle("Learn Words")
+        self.setMinimumSize(800, 600)
         self.speechEngine = pyttsx3.init()
         self.speechEngine.setProperty('rate', 130)
         # Initialize words storage
