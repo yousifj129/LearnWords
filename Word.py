@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from typing import List, Optional
 import requests
 from typing import Dict, Any
-
+from bing_image_downloader import downloader
+import os
 @dataclass
 class Phonetic:
     text: str
@@ -41,7 +42,7 @@ class Word:
         self.meanings: List[Meaning] = []
         self.license: Optional[Dict[str, str]] = None
         self.source_urls: List[str] = []
-        
+        self.imageLink = None
         # Convenience properties
         self.main_definition: Optional[str] = None
         self.all_synonyms: List[str] = []
@@ -58,6 +59,9 @@ class Word:
             self._parse_response(response.json()[0])
         else:
             raise ValueError(f"Could not find word '{self.word}'")
+        
+        self.downloadimages(self.word)
+            
     
     def _parse_response(self, data: Dict[str, Any]) -> None:
         """Parses the API response and sets the class attributes."""
@@ -130,3 +134,11 @@ class Word:
     
     def __repr__(self) -> str:
         return f"Word('{self.word}')"
+    
+    def downloadimages(self, query):
+        w = downloader.download(query, limit=1,  output_dir='downloads', 
+        adult_filter_off=True, force_replace=False, timeout=60)
+        ## find the file whether its an JPG, or JPEG, or PNG
+        for file in os.listdir("./downloads/" + query):
+            if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png") or file.endswith(".gif") or file.endswith(".webp"):
+                self.imageLink = "./downloads/" + query + "/" + file

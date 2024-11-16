@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import List, Dict
 from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, 
                               QHBoxLayout, QLineEdit, QPushButton, QTextEdit, 
-                              QLabel, QMessageBox)
+                              QLabel, QMessageBox,QSizePolicy)
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 import pyttsx3 
 from Word import Word
 from QuizWindow import QuizWindow
@@ -58,10 +59,21 @@ class MainWind(QMainWindow):
         inspect_button.clicked.connect(self.inspectWords)
         input_layout2.addWidget(inspect_button)
         
+
+        displayLayout1 = QHBoxLayout()
         # Create display area
         self.display_area = QTextEdit()
         self.display_area.setReadOnly(True)
+
+        displayLayout1.addWidget(self.display_area)
         
+        self.imageShow = QLabel()
+        self.imageShow.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.imageShow.setFixedSize(300,300)
+        self.imageShow.setScaledContents(True)
+        self.imageShow.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)  
+        displayLayout1.addWidget(self.imageShow)
+
         # Create word count label
         self.word_count_label = QLabel("Words learned: 0")
         
@@ -69,7 +81,7 @@ class MainWind(QMainWindow):
         layout.addLayout(input_layout)
         layout.addLayout(input_layout2)
         layout.addWidget(QLabel("Word Information:"))
-        layout.addWidget(self.display_area)
+        layout.addLayout(displayLayout1)
         layout.addWidget(self.word_count_label)
         
         # Update word count
@@ -123,7 +135,8 @@ class MainWind(QMainWindow):
                 "synonyms": word.all_synonyms,
                 "antonyms": word.all_antonyms,
                 "phonetic": word.phonetic,
-                "examples": examplesList
+                "examples": examplesList,
+                "imageLink": word.imageLink
             }
             
             # Save to file
@@ -164,6 +177,7 @@ class MainWind(QMainWindow):
             display_text += f"Antonyms: {', '.join(word_info['antonyms'])}\n"
         
         self.display_area.setText(display_text)
+        self.imageShow.setPixmap(QPixmap(word_info['imageLink']))
     
     def update_word_count(self):
         """Update the word count label."""
