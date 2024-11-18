@@ -12,7 +12,9 @@ import pyttsx3
 from Word import Word
 from QuizWindow import QuizWindow
 from InspectWords import InspectWordsWindow
-
+from PySide6.QtCore import QTimer,QThread
+import os
+import threading
 class MainWind(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -129,8 +131,16 @@ class MainWind(QMainWindow):
                     if definition.example != None:
                         examplesList.append(definition.example)
             print(definitionslist)
-            # Store word information
-            self.learned_words[word_text] = {
+            
+            QTimer.singleShot(1000, lambda: self.set_data(word_text, examplesList, definitionslist, word))
+            
+        except ValueError as e:
+            QMessageBox.warning(self, "Error", f"Could not find word '{word_text}'")
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"An error occurred: {str(e)}")
+    def set_data(self,word_text, examplesList, definitionslist,word: Word):
+        print(word.imageLink)
+        self.learned_words[word_text] = {
                 "definition": definitionslist,
                 "synonyms": word.all_synonyms,
                 "antonyms": word.all_antonyms,
@@ -140,22 +150,16 @@ class MainWind(QMainWindow):
             }
             
             # Save to file
-            self.save_words()
+        self.save_words()
             
             # Display word information
-            self.display_word_info(word_text)
+        self.display_word_info(word_text)
             
             # Clear input
-            self.word_input.clear()
+        self.word_input.clear()
             
             # Update word count
-            self.update_word_count()
-            
-        except ValueError as e:
-            QMessageBox.warning(self, "Error", f"Could not find word '{word_text}'")
-        except Exception as e:
-            QMessageBox.warning(self, "Error", f"An error occurred: {str(e)}")
-    
+        self.update_word_count()
     def display_word_info(self, word: str):
         """Display word information in the text area."""
         word_info = self.learned_words[word]
@@ -177,8 +181,17 @@ class MainWind(QMainWindow):
             display_text += f"Antonyms: {', '.join(word_info['antonyms'])}\n"
         
         self.display_area.setText(display_text)
-        self.imageShow.setPixmap(QPixmap(word_info['imageLink']))
+        self.set_image(word_info)
     
+    imageTries=0
+    def set_image(self, word_info):
+        print(word_info['imageLink'])
+        try:
+            self.imageShow.setPixmap(QPixmap(word_info['imageLink']))
+        except Exception as e:
+            # If the image is still not downloaded after 1 second, try again
+            QTimer.singleShot(1000, lambda: self.set_image(word_info))
+
     def update_word_count(self):
         """Update the word count label."""
         count = len(self.learned_words)
@@ -195,7 +208,5 @@ class MainWind(QMainWindow):
         self.quiz_window.show()
 
     def inspectWords(self):
-    
-    # ... (rest of the VocabularyApp class remains the same)
         self.inspectWordsWindow = InspectWordsWindow(self.learned_words, self)
         self.inspectWordsWindow.show()

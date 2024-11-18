@@ -4,6 +4,8 @@ import requests
 from typing import Dict, Any
 from bing_image_downloader import downloader
 import os
+import threading
+
 @dataclass
 class Phonetic:
     text: str
@@ -136,9 +138,11 @@ class Word:
         return f"Word('{self.word}')"
     
     def downloadimages(self, query):
+        threading.Thread(target=self._download_images, args=(query,)).start()
+
+    def _download_images(self, query):
         w = downloader.download(query, limit=1,  output_dir='downloads', 
-        adult_filter_off=True, force_replace=False, timeout=60)
-        ## find the file whether its an JPG, or JPEG, or PNG
+                                adult_filter_off=True, force_replace=False, timeout=60,verbose=False)
         for file in os.listdir("./downloads/" + query):
             if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png") or file.endswith(".gif") or file.endswith(".webp"):
                 self.imageLink = "./downloads/" + query + "/" + file
