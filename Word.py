@@ -137,7 +137,7 @@ class Word:
     
     def downloadimages(self, query):
         w = downloader.download(query, limit=1,  output_dir='downloads', 
-        adult_filter_off=True, force_replace=False, timeout=60)
+        adult_filter_off=True, force_replace=False, timeout=60, verbose=False, filter="")
         ## find the file whether its an JPG, or JPEG, or PNG
         for file in os.listdir("./downloads/" + query):
             if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png") or file.endswith(".gif") or file.endswith(".webp"):
