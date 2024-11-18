@@ -11,7 +11,7 @@ import pyttsx3
 from Word import Word
 from QuizWindow import QuizWindow
 from InspectWords import InspectWordsWindow
-
+from PDFReadWindow import PDFReadWindow
 class MainWind(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -49,14 +49,17 @@ class MainWind(QMainWindow):
         input_layout.addWidget(quiz_button)
         input_layout2 = QHBoxLayout()
 
-        # Create quiz button
         read_button = QPushButton("Read Word")
         read_button.clicked.connect(self.read_word)
         input_layout2.addWidget(read_button)
-        # Create quiz button
+
         inspect_button = QPushButton("Inspect Words")
         inspect_button.clicked.connect(self.inspectWords)
         input_layout2.addWidget(inspect_button)
+
+        pdf_button = QPushButton("Open PDF")
+        pdf_button.clicked.connect(self.PDFreader)
+        input_layout2.addWidget(pdf_button)
         
         # Create display area
         self.display_area = QTextEdit()
@@ -142,7 +145,57 @@ class MainWind(QMainWindow):
             QMessageBox.warning(self, "Error", f"Could not find word '{word_text}'")
         except Exception as e:
             QMessageBox.warning(self, "Error", f"An error occurred: {str(e)}")
-    
+    def add_word_out(self,word):
+        """Add a new word and display its information."""
+        word_text = word
+
+        if not word_text:
+            return
+        
+        try:
+            self.currentWord = word_text
+            # Check if word is already learned
+            if word_text in self.learned_words:
+                self.display_word_info(word_text)
+                QMessageBox.information(self, "Word Exists", 
+                                      f"The word '{word_text}' is already in your vocabulary list!")
+                return
+            
+            # Fetch word information
+            word = Word(word_text)
+            definitionslist = []
+            examplesList = []
+            for meaning in word.meanings:
+                for definition in meaning.definitions:
+                    definitionslist.append(definition.definition)
+                    if definition.example != None:
+                        examplesList.append(definition.example)
+            print(definitionslist)
+            # Store word information
+            self.learned_words[word_text] = {
+                "definition": definitionslist,
+                "synonyms": word.all_synonyms,
+                "antonyms": word.all_antonyms,
+                "phonetic": word.phonetic,
+                "examples": examplesList
+            }
+            
+            # Save to file
+            self.save_words()
+            
+            # Display word information
+            self.display_word_info(word_text)
+            
+            # Clear input
+            self.word_input.clear()
+            
+            # Update word count
+            self.update_word_count()
+            
+        except ValueError as e:
+            QMessageBox.warning(self, "Error", f"Could not find word '{word_text}'")
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"An error occurred: {str(e)}")
     def display_word_info(self, word: str):
         """Display word information in the text area."""
         word_info = self.learned_words[word]
@@ -185,3 +238,7 @@ class MainWind(QMainWindow):
     # ... (rest of the VocabularyApp class remains the same)
         self.inspectWordsWindow = InspectWordsWindow(self.learned_words, self)
         self.inspectWordsWindow.show()
+
+    def PDFreader(self):
+        self.PDFreaderWindow = PDFReadWindow(self.learned_words, self)
+        self.PDFreaderWindow.show()
