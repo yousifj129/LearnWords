@@ -106,8 +106,7 @@ class MainWind(QMainWindow):
             # Check if word is already learned
             if word_text in self.learned_words:
                 self.display_word_info(word_text)
-                QMessageBox.information(self, "Word Exists", 
-                                      f"The word '{word_text}' is already in your vocabulary list!")
+                print("Word Exists already")
                 return
             
             # Fetch word information
@@ -157,8 +156,7 @@ class MainWind(QMainWindow):
             # Check if word is already learned
             if word_text in self.learned_words:
                 self.display_word_info(word_text)
-                QMessageBox.information(self, "Word Exists", 
-                                      f"The word '{word_text}' is already in your vocabulary list!")
+                print("word already exist")
                 return
             
             # Fetch word information
