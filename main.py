@@ -18,17 +18,19 @@ def main():
     # load settings.json
     with open("settings.json", "r") as f:
         settings = json.load(f)
-    print(settings["settings"]["theme"])
+    print(settings["theme"])
     theme = ""
-    if settings["settings"]["theme"] == "dark":
+    if settings["theme"] == "dark":
         theme = "Windows11"
-    elif settings["settings"]["theme"] == "light":
+    elif settings["theme"] == "light":
         theme = "windowsvista"
+    elif settings["theme"] == "system":
+        theme = ""
     else:
         theme = "Fusion"
 
 
-    font = QFont(settings["settings"]["font"], int(settings["settings"]["fontSize"]))
+    font = QFont(settings["font"], int(settings["fontSize"]))
     
 
     app.setWindowIcon(icon)

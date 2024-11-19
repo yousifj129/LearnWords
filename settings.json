@@ -1,7 +1,1 @@
-{
-    "settings": {
-        "theme": "fusion",
-        "font":"Arial",
-        "fontSize": "15"
-    }
-}
+{"theme": "dark", "font": "Arial", "fontSize": 15}

@@ -12,6 +12,7 @@ from Word import Word
 from QuizWindow import QuizWindow
 from InspectWords import InspectWordsWindow
 from PDFReadWindow import PDFReadWindow
+from settingsWindow import SettingsWindow
 class MainWind(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -60,6 +61,10 @@ class MainWind(QMainWindow):
         pdf_button = QPushButton("Open PDF")
         pdf_button.clicked.connect(self.PDFreader)
         input_layout2.addWidget(pdf_button)
+
+        settings_button = QPushButton("Settings")
+        settings_button.clicked.connect(self.openSettings)
+        input_layout2.addWidget(settings_button)
         
         # Create display area
         self.display_area = QTextEdit()
@@ -240,3 +245,6 @@ class MainWind(QMainWindow):
     def PDFreader(self):
         self.PDFreaderWindow = PDFReadWindow(self.learned_words, self)
         self.PDFreaderWindow.show()
+    def openSettings(self):
+        self.settingsWindow = SettingsWindow()
+        self.settingsWindow.show()
