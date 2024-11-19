@@ -12,11 +12,28 @@ from PySide6.QtGui import QIcon,QColor,QPalette
 def main():
     app = QApplication(sys.argv)
     icon = QIcon("imgs/ICON.png")
+    
+    
+    settings = {}
+    # load settings.json
+    with open("settings.json", "r") as f:
+        settings = json.load(f)
+    print(settings["settings"]["theme"])
+    theme = ""
+    if settings["settings"]["theme"] == "dark":
+        theme = "Windows11"
+    elif settings["settings"]["theme"] == "light":
+        theme = "windowsvista"
+    else:
+        theme = "Fusion"
+
+
+    font = QFont(settings["settings"]["font"], int(settings["settings"]["fontSize"]))
+    
+
     app.setWindowIcon(icon)
-    font = QFont("Arial", 15)
     app.setFont(font)
-    print(QStyleFactory.keys())
-    app.setStyle(QStyleFactory.create("windows11"))
+    app.setStyle(QStyleFactory.create(theme))
     window = MainWind()
     window.show()
     sys.exit(app.exec())

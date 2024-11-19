@@ -166,4 +166,3 @@ learned_words
 *.csv
 *.spec
 __pycache__
-settings.json
