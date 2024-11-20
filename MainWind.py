@@ -14,14 +14,15 @@ from InspectWords import InspectWordsWindow
 from PDFReadWindow import PDFReadWindow
 from settingsWindow import SettingsWindow
 class MainWind(QMainWindow):
-    def __init__(self):
+    def __init__(self,app,wordsFile):
         super().__init__()
         self.setWindowTitle("Learn Words")
         self.setMinimumSize(800, 600)
         self.speechEngine = pyttsx3.init()
         self.speechEngine.setProperty('rate', 130)
+        self.app = app
         # Initialize words storage
-        self.words_file = Path("learned_words.json")
+        self.words_file = Path(wordsFile)
         self.learned_words: Dict = self.load_words()
         self.currentWord = ""
         self.destroyed.connect(self.save_words)
@@ -246,5 +247,5 @@ class MainWind(QMainWindow):
         self.PDFreaderWindow = PDFReadWindow(self.learned_words, self)
         self.PDFreaderWindow.show()
     def openSettings(self):
-        self.settingsWindow = SettingsWindow()
+        self.settingsWindow = SettingsWindow(app=self.app, mainwind=self)
         self.settingsWindow.show()

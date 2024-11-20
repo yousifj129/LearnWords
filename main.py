@@ -29,14 +29,14 @@ def main():
     else:
         theme = "Fusion"
 
-
+    # set theme
     font = QFont(settings["font"], int(settings["fontSize"]))
-    
-
     app.setWindowIcon(icon)
     app.setFont(font)
     app.setStyle(QStyleFactory.create(theme))
-    window = MainWind()
+
+
+    window = MainWind(app,settings["wordsFile"])
     window.show()
     sys.exit(app.exec())
 
